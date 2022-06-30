@@ -1,4 +1,5 @@
 All: Align Trim
+
 Data:
 ## Make directories for data storage
 	mkdir -p data
@@ -15,30 +16,27 @@ Data:
 ## Turn xml into tabular file
 	cat summary.xml | conda run -n biostars xtract -pattern DocumentSummary -element Run@acc Title
 ## Download chromosomes
-URL=http://hgdownload.cse.ucsc.edu/goldenPath/sacCer3/bigZips/chromFa.tar.gz
-curl $URL | tar zxv
+	URL=http://hgdownload.cse.ucsc.edu/goldenPath/sacCer3/bigZips/chromFa.tar.gz
+	curl $URL | tar zxv
 ## Download chromosome sizes
-curl http://hgdownload.cse.ucsc.edu/goldenPath/sacCer3/bigZips/sacCer3.chrom.sizes > refs/sacCer3.chrom.sizes
+	curl http://hgdownload.cse.ucsc.edu/goldenPath/sacCer3/bigZips/sacCer3.chrom.sizes > refs/sacCer3.chrom.sizes
 ## Move .fa files
-mv *.fa refs
+	mv *.fa refs
 ## Create genome
-cat refs/chr*.fa > $REF
+	cat refs/chr*.fa > $REF
 ## Index the reference
-bwa index $REF
-samtools faidx $REF
+	bwa index $REF
+	samtools faidx $REF
 
 Align: Data
 	cat runids.txt | conda run -n biostars parallel --eta --verbose "bwa mem -t 4 $REF data/{}_1.fastq | samtools sort -@ 8 > bam/{}.bam"
 
 Trim:
 ## Trim each bam file.
-cat runids.txt | conda run -n biostars parallel --eta --verbose "bam trimBam bam/{}.bam bam/temp-{}.bam -R 70 --clip"
-
+	cat runids.txt | conda run -n biostars parallel --eta --verbose "bam trimBam bam/{}.bam bam/temp-{}.bam -R 70 --clip"
 ## Re-sort alignments.
-cat runids.txt | conda run -n biostars parallel --eta --verbose "samtools sort -@ 8 bam/temp-{}.bam > bam/trimmed-{}.bam"
-
+	cat runids.txt | conda run -n biostars parallel --eta --verbose "samtools sort -@ 8 bam/temp-{}.bam > bam/trimmed-{}.bam"
 ## Get rid of temporary BAM files.
-rm -f bam/temp*
-
+	rm -f bam/temp*
 ## Reindex trimmed bam files.
-cat runids.txt | conda run -n biostars parallel --eta --verbose "samtools index bam/trimmed-{}.bam"
+	cat runids.txt | conda run -n biostars parallel --eta --verbose "samtools index bam/trimmed-{}.bam"
