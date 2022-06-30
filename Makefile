@@ -1,3 +1,4 @@
+All: Align Trim
 Data:
 ## Make directories for data storage
 	mkdir -p data
@@ -25,3 +26,19 @@ cat refs/chr*.fa > $REF
 ## Index the reference
 bwa index $REF
 samtools faidx $REF
+
+Align: Data
+	cat runids.txt | conda run -n biostars parallel --eta --verbose "bwa mem -t 4 $REF data/{}_1.fastq | samtools sort -@ 8 > bam/{}.bam"
+
+Trim:
+## Trim each bam file.
+cat runids.txt | conda run -n biostars parallel --eta --verbose "bam trimBam bam/{}.bam bam/temp-{}.bam -R 70 --clip"
+
+## Re-sort alignments.
+cat runids.txt | conda run -n biostars parallel --eta --verbose "samtools sort -@ 8 bam/temp-{}.bam > bam/trimmed-{}.bam"
+
+## Get rid of temporary BAM files.
+rm -f bam/temp*
+
+## Reindex trimmed bam files.
+cat runids.txt | conda run -n biostars parallel --eta --verbose "samtools index bam/trimmed-{}.bam"
