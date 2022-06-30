@@ -9,3 +9,7 @@ Data:
 	cat runinfo.csv | cut -f 1 -d , | grep SRR > runids.txt
 ## Download fastq files
 	cat runids.txt | conda run -n biostars parallel --eta --verbose  "fastq-dump -O data --split-files -F {}"
+## Run esummary
+conda run -n biostars esearch -db sra -query PRJNA306490 | conda run -n biostars esummary > summary.xml
+## Turn xml into tabular file
+cat summary.xml | conda run -n biostars xtract -pattern DocumentSummary -element Run@acc Title
