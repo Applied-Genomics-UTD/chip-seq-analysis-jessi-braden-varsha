@@ -22,3 +22,6 @@ curl http://hgdownload.cse.ucsc.edu/goldenPath/sacCer3/bigZips/sacCer3.chrom.siz
 mv *.fa refs
 ## Create genome
 cat refs/chr*.fa > $REF
+## Index the reference
+bwa index $REF
+samtools faidx $REF

@@ -4,5 +4,5 @@
 *.txt
 *.fastq
 *.xml
-*.fa
+*.fa*
 *.sizes
