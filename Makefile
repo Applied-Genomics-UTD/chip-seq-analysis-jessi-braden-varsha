@@ -1,4 +1,4 @@
-All: Align Trim
+All: Align Data Trim
 
 Data:
 ## Make directories for data storage
@@ -28,7 +28,7 @@ Data:
 	bwa index $REF
 	samtools faidx $REF
 
-Align: Data
+Align:
 	cat runids.txt | conda run -n biostars parallel --eta --verbose "bwa mem -t 4 $REF data/{}_1.fastq | samtools sort -@ 8 > bam/{}.bam"
 
 Trim:
