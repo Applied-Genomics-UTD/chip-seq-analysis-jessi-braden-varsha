@@ -26,10 +26,8 @@ Data:
 Environment:
 ## Create macs conda environment
 	conda create --name macs python=2.7
-
 ## Install tools
-	conda run -n macs conda install numpy
-	conda run -n macs conda install macs2
+	conda run -n macs conda install bioconda::macs2=2.2.7
 
 REF ?= refs/saccer3.fa
 Index:
@@ -65,4 +63,7 @@ Summarize:
 	samtools merge -f -r bam/glucose.bam bam/SRR3033154.bam bam/SRR3033155.bam
 	samtools merge -f -r bam/ethanol.bam bam/SRR3033156.bam bam/SRR3033157.bam
 	samtools index bam/glucose.bam 
-	samtools index bam/ethanol.bam 
+	samtools index bam/ethanol.bam
+## Generate coverages
+	bedtools genomecov -ibam bam/glucose.bam  -g ${REF}.fai -bg > bam/glucose.bedgraph
+	bedtools genomecov -ibam bam/ethanol.bam  -g ${REF}.fai -bg > bam/ethanol.bedgraph
