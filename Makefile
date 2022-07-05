@@ -42,9 +42,16 @@ Trim:
 	cat runids.txt | conda run -n biostars parallel --eta --verbose "samtools index bam/trimmed-{}.bam"
 
 Visualize:
-# Create a genome file for bedtools
+## Create a genome file for bedtools
 	samtools faidx ${REF}
-# Create the coverage files for all BAM files.
+## Create the coverage files for all BAM files.
 	ls bam/*.bam | parallel --eta --verbose "bedtools genomecov -ibam {} -g ${REF}.fai -bg | sort -k1,1 -k2,2n > {.}.bedgraph"
-# Generate all bigwig coverages from bedgraphs.
+## Generate all bigwig coverages from bedgraphs.
 	ls bam/*.bedgraph | parallel --eta --verbose "bedGraphToBigWig {} ${REF}.fai {.}.bw"
+
+Summarize:
+## Merge all replicates into one file
+	samtools merge -r bam/glucose.bam bam/SRR3033154.bam bam/SRR3033155.bam
+	samtools merge -r bam/ethanol.bam bam/SRR3033156.bam bam/SRR3033157.bam
+	samtools index bam/glucose.bam 
+	samtools index bam/ethanol.bam 
