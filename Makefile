@@ -25,9 +25,7 @@ Data:
 
 Environment:
 ## Create macs conda environment
-	conda create --name macs python=2.7
-## Install tools
-	conda run -n macs conda install bioconda::macs2=2.2.7
+	conda create -n macs bioconda::macs2=2.2.7
 
 REF ?= refs/saccer3.fa
 Index:
