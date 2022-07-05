@@ -51,7 +51,7 @@ Visualize:
 
 Summarize:
 ## Merge all replicates into one file
-	samtools merge -r bam/glucose.bam bam/SRR3033154.bam bam/SRR3033155.bam
-	samtools merge -r bam/ethanol.bam bam/SRR3033156.bam bam/SRR3033157.bam
+	samtools merge -f -r bam/glucose.bam bam/SRR3033154.bam bam/SRR3033155.bam
+	samtools merge -f -r bam/ethanol.bam bam/SRR3033156.bam bam/SRR3033157.bam
 	samtools index bam/glucose.bam 
 	samtools index bam/ethanol.bam 
