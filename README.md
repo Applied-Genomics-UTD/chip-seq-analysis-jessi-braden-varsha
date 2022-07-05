@@ -13,4 +13,10 @@ exit
 ## Update biostars environment
 conda env export -n biostars > environment.yml
 conda env update --name biostars --file environment.yml --prune
+
+## Download data
+make Data
+
+## Run analyses
+make
 ```

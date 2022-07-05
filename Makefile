@@ -1,4 +1,4 @@
-All: Data Align Trim Visualize
+All: Index Align Trim Visualize Summarize
 
 Data:
 ## Make directories for data storage
@@ -22,6 +22,9 @@ Data:
 	curl http://hgdownload.cse.ucsc.edu/goldenPath/sacCer3/bigZips/sacCer3.chrom.sizes > refs/sacCer3.chrom.sizes
 ## Move .fa files
 	mv *.fa refs
+
+REF ?= refs/saccer3.fa
+Index:
 ## Create genome
 	cat refs/chr*.fa > ${REF}
 ## Index the reference
