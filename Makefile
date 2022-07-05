@@ -74,3 +74,11 @@ ETH1 = bam/trimmed-SRR3033156.bam
 ETH2 = bam/trimmed-SRR3033157.bam
 Call:
 	conda run -n macs macs2 callpeak -t ${ETH1} ${ETH2} -c ${GLU1} ${GLU2} --gsize 1E7  --name ethanol --outdir ethanol/
+
+Motifs:
+## Turn output into 9 column gff files
+	cat ${REF} | conda run -n biostars seqkit locate -p GTGACGT | grep -v seqID | conda run -n biostars awk ' { OFS="\t"; print $$1, ".", ".", $$5, $$6, ".", $$4, ".", "." }' > motifs.gff
+## Check published peaks
+	curl -O http://data.biostarhandbook.com/chipseq/peaks-published.bed
+	conda run -n biostars bedtools intersect -u -a peaks-published.bed -b motifs.gff | wc -l
+  
