@@ -45,9 +45,9 @@ Visualize:
 ## Create a genome file for bedtools
 	samtools faidx ${REF}
 ## Create the coverage files for all BAM files.
-	ls bam/*.bam | parallel --eta --verbose "bedtools genomecov -ibam {} -g ${REF}.fai -bg | sort -k1,1 -k2,2n > {.}.bedgraph"
+	ls bam/*.bam | conda run -n biostars parallel --eta --verbose "bedtools genomecov -ibam {} -g ${REF}.fai -bg | sort -k1,1 -k2,2n > {.}.bedgraph"
 ## Generate all bigwig coverages from bedgraphs.
-	ls bam/*.bedgraph | parallel --eta --verbose "bedGraphToBigWig {} ${REF}.fai {.}.bw"
+	ls bam/*.bedgraph | conda run -n biostars parallel --eta --verbose "bedGraphToBigWig {} ${REF}.fai {.}.bw"
 
 Summarize:
 ## Merge all replicates into one file
