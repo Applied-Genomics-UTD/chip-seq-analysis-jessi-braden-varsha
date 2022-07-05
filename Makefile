@@ -23,6 +23,14 @@ Data:
 ## Move .fa files
 	mv *.fa refs
 
+Environment:
+## Create macs conda environment
+	conda create --name macs python=2.7
+
+## Install tools
+	conda run -n macs conda install numpy
+	conda run -n macs conda install macs2
+
 REF ?= refs/saccer3.fa
 Index:
 ## Create genome
