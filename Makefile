@@ -82,4 +82,3 @@ Motifs:
 ## Check published peaks
 	curl -O http://data.biostarhandbook.com/chipseq/peaks-published.bed
 	conda run -n biostars bedtools intersect -u -a peaks-published.bed -b motifs.gff | wc -l
-  
