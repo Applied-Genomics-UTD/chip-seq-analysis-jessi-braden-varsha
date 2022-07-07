@@ -1,4 +1,4 @@
-All: Index Align Trim Visualize Summarize
+All: Index Align Trim Visualize Summarize Call Motifs
 
 Data:
 ## Make directories for data storage
@@ -72,6 +72,7 @@ GLU2 = bam/trimmed-SRR3033155.bam
 ## Ethanol samples
 ETH1 = bam/trimmed-SRR3033156.bam
 ETH2 = bam/trimmed-SRR3033157.bam
+
 Call:
 	conda run -n macs macs2 callpeak -t ${ETH1} ${ETH2} -c ${GLU1} ${GLU2} --gsize 1E7  --name ethanol --outdir ethanol/
 

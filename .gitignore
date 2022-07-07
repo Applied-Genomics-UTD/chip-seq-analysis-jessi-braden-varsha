@@ -10,3 +10,5 @@
 *.bedgraph*
 *.bw*
 *.gff
+/ethanol
+*.bed*
