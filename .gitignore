@@ -12,3 +12,8 @@
 *.gff
 /ethanol
 *.bed*
+.nextflow*
+work/
+data/
+results/
+test-run/
