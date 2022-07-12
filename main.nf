@@ -34,8 +34,7 @@ process YAP1_OVERLAP_H3K27AC {
     path YAP1
     
     output:
-    path "H3K27ac_filtered_peaks.bed", emit: H3K27ac
-    path "YAP1_filtered_peaks.bed", emit: YAP1
+    stdout
 
     script:
     """
@@ -46,6 +45,8 @@ process YAP1_OVERLAP_H3K27AC {
     bedtools intersect -a $H3K27ac -b $YAP1 -wa | wc -l
 
     bedtools intersect -a $H3K27ac -b $YAP1 -wa | sort | uniq | wc -l
+
+    bedtools intersect -a $H3K27ac -b $YAP1 -wa | sort | uniq -c | sort -k1,1nr | head
     """
 }
 
@@ -56,5 +57,5 @@ workflow {
         params.YAP1_peaks)
     YAP1_OVERLAP_H3K27AC(
         COMPARE_PEAK_SETS.out.H3K27ac,
-        COMPARE_PEAK_SETS.out.YAP1)
+        COMPARE_PEAK_SETS.out.YAP1) | view
 }
